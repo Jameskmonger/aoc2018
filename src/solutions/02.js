@@ -19,6 +19,35 @@ const partOne = (input) => {
     return twos * threes;
 };
 
+const getCommonCharacters = (a, b) => {
+    const common = [];
+
+    for (let i = 0; i < a.length; i++) {
+        if (a[i] === b[i]) {
+            common.push(a[i]);
+        }
+    }
+
+    return common;
+};
+
+const partTwo = (input) => {
+    const lines = input.split("\n");
+
+    for (let line of lines) {
+        const others = lines.filter(other => other !== line);
+
+        const commons = others.map(other => getCommonCharacters(line, other));
+
+        const match = commons.find(common => common.length === line.length - 1);
+
+        if (match) {
+            return match.join("");
+        }
+    };
+};
+
 module.exports = {
-    partOne: partOne
+    partOne: partOne,
+    partTwo: partTwo
 };
