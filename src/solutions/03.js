@@ -1,9 +1,9 @@
 const regex = /\#(\d+) \@ (\d+)\,(\d+)\: (\d+)\x(\d+)/;
 
-const partOne = (input) => {
+const getClaims = (input) => {
     const lines = input.split("\n");
 
-    const claims = lines.map(line => {
+    return lines.map(line => {
         const extracted = regex.exec(line);
 
         return {
@@ -14,6 +14,10 @@ const partOne = (input) => {
             height: parseInt(extracted[5])
         };
     });
+}; 
+
+const partOne = (input) => {
+    const claims = getClaims(input);
 
     const grid = claims.reduce((acc, cur) => {
         for (let x = cur.x; x < cur.x + cur.width; x++) {
