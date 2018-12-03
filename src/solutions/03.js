@@ -32,6 +32,36 @@ const partOne = (input) => {
     return Object.values(grid).filter(x => x > 1).length;
 };
 
+const partTwo = (input) => {
+    const claims = getClaims(input);
+
+    const grid = [];
+    const claimsIntact = [];
+
+    for (const claim of claims) {
+        let intact = true;
+
+        for (let x = claim.x; x < claim.x + claim.width; x++) {
+            for (let y = claim.y; y < claim.y + claim.height; y++) {
+                const occupying = grid[`${x},${y}`];
+
+                if (occupying !== undefined) {
+                    intact = false;
+                    claimsIntact[occupying] = false;
+                }
+
+                grid[`${x},${y}`] = claim.id;
+            }
+        }
+
+        claimsIntact[claim.id] = intact;
+    }
+    
+    return claimsIntact.findIndex(x => x === true);
+};
+
+
 module.exports = {
-    partOne: partOne
+    partOne: partOne,
+    partTwo: partTwo
 };
