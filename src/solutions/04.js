@@ -76,19 +76,42 @@ const parseTimesheets = (input) => {
     return Object.values(timesheets);
 }
 
+const getSleepiestMinute = (log) => {
+    // remove all empty minutes
+    const sleptMinutes = log.filter(x => x !== undefined);
+    const highestIncidence = Math.max(...sleptMinutes);
+
+    return log.indexOf(highestIncidence);
+};
+
 const partOne = (input) => {
     const sleepiestGuard = parseTimesheets(input).sort((a, b) => b.total - a.total)[0];
 
-    // remove all empty minutes
-    const sleptMinutes = sleepiestGuard.log.filter(x => x !== undefined);
-
-    const highestIncidence = Math.max(...sleptMinutes);
-
-    const sleepiestMinute = sleepiestGuard.log.indexOf(highestIncidence);
-
-    return sleepiestGuard.guardId * sleepiestMinute;
+    return sleepiestGuard.guardId * getSleepiestMinute(sleepiestGuard.log);
 };
 
+const partTwo = (input) => {
+    const timesheets = parseTimesheets(input);
+
+    let highestAmount = 0;
+    let highestGuard = null;
+    let highestMinute = null;
+
+    for (const timesheet of timesheets) {
+        const sleepiest = getSleepiestMinute(timesheet.log);
+        const value = timesheet.log[sleepiest];
+
+        if (value > highestAmount) {
+            highestAmount = value;
+            highestGuard = timesheet.guardId;
+            highestMinute = sleepiest;
+        }
+    }
+
+    return highestGuard * highestMinute;
+}
+
 module.exports = {
-    partOne: partOne
+    partOne: partOne,
+    partTwo: partTwo
 };
