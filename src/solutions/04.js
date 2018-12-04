@@ -32,14 +32,19 @@ const mapLineToInstruction = (line) => {
     };
 };
 
-const partOne = (input) => {
+const getInstructions = (input) => {
     const lines = input.split("\n");
     lines.sort();
 
+    return lines.map(mapLineToInstruction);
+};
+
+const parseTimesheets = (input) => {
     let currentGuard = null;
     let sleepTime = null;
     const timesheets = {};
-    for (const instruction of lines.map(mapLineToInstruction)) {
+
+    for (const instruction of getInstructions(input)) {
         if (instruction.type === InstructionType.NEW_GUARD) {
             currentGuard = instruction.guardId;
             sleepTime = null;
@@ -68,7 +73,11 @@ const partOne = (input) => {
         }
     }
 
-    const sleepiestGuard = Object.values(timesheets).sort((a, b) => b.total - a.total)[0];
+    return Object.values(timesheets);
+}
+
+const partOne = (input) => {
+    const sleepiestGuard = parseTimesheets(input).sort((a, b) => b.total - a.total)[0];
 
     // remove all empty minutes
     const sleptMinutes = sleepiestGuard.log.filter(x => x !== undefined);
