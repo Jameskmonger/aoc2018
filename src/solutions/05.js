@@ -3,6 +3,7 @@ const generatePairRegex = (char) => {
     const upper = char.toUpperCase();
     return RegExp(`(${char}${upper})|(${upper}${char})`, "g");
 };
+const generateSingleRegex = (char) => RegExp(`${char}|${char.toUpperCase()}`, "g");
 
 const reactPolymers = (input) => {
     let result = input;
@@ -25,6 +26,24 @@ const reactPolymers = (input) => {
 
 const partOne = (input) => reactPolymers(input).length;
 
+const partTwo = (input) => {
+    let lowest = Number.MAX_SAFE_INTEGER;
+
+    for (const char of ALPHABET) {
+        const regex = generateSingleRegex(char);
+        const stripped = input.replace(regex, "");
+
+        const reacted = reactPolymers(stripped);
+
+        if (reacted.length < lowest) {
+            lowest = reacted.length;
+        }
+    }
+
+    return lowest;
+};
+
 module.exports = {
-    partOne: partOne
+    partOne: partOne,
+    partTwo: partTwo
 };
