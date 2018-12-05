@@ -1,26 +1,26 @@
+const ALPHABET = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+const generateRegex = (char) => {
+    const upper = char.toUpperCase();
+    return RegExp(`(${char}${upper})|(${upper}${char})`, "g");
+};
+
 const partOne = (input) => {
-    let parts = input.split("");
+    let result = input;
     let changesMade = true;
 
     while (changesMade) {
-        changesMade = false;
-        
-        for (let i = 1; i < parts.length; i++) {
-            const current = parts[i - 1];
-            const next = parts[i];
+        const startLength = result.length;
 
-            const matches = current.toUpperCase() === next.toUpperCase() && current !== next;
-
-            if (matches) {
-                parts[i - 1] = parts[i] = "_";
-                changesMade = true;
-            }
+        for (const char of ALPHABET) {
+            const regex = generateRegex(char);
+            
+            result = result.replace(regex, "");
         }
 
-        parts = parts.filter(x => x !== "_");
+        changesMade = startLength !== result.length;
     }
 
-    return parts.length;
+    return result.length;
 };
 
 module.exports = {
