@@ -69,6 +69,29 @@ const partOne = (input) => {
     return Math.max(...closests);
 };
 
+const partTwo = (input) => {
+    const PERMISSIBLE_DISTANCE = 10000;
+    const positions = input.split("\n").map(parseCoordinate);
+    const bounds = getMax(positions);
+
+    let pointsWithinRange = 0;
+
+    for (let x = 0; x < bounds.x; x++) {
+        for (let y = 0; y < bounds.y; y++) {
+            const totalDistance = positions.reduce((acc, cur) => {
+                return acc + distanceBetween(x, y, cur.x, cur.y);
+            }, 0);
+
+            if (totalDistance < PERMISSIBLE_DISTANCE) {
+                pointsWithinRange++;
+            }
+        }
+    }
+
+    return pointsWithinRange;
+};
+
 module.exports = {
-    partOne: partOne
+    partOne: partOne,
+    partTwo: partTwo
 };
