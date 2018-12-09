@@ -21,9 +21,7 @@ const addMarble = (value, prev) => {
     return newMarble;
 };
 
-const partOne = (input) => {
-    const options = parseInput(input);
-
+const getScores = (players, lastMarble) => {
     const scores = [];
     let currentPlayer = -1;
 
@@ -35,7 +33,7 @@ const partOne = (input) => {
     currentMarble.prev = currentMarble;
     currentMarble.next = currentMarble;
 
-    for (let i = 1; i < options.lastMarble; i++) {
+    for (let i = 1; i < lastMarble; i++) {
         if (scores[currentPlayer] === undefined) {
             scores[currentPlayer] = 0;
         }
@@ -52,12 +50,29 @@ const partOne = (input) => {
             currentMarble = addMarble(i, currentMarble.next);
         }
 
-        currentPlayer = currentPlayer % options.players + 1;
+        currentPlayer = currentPlayer % players + 1;
     }
+
+    return scores;
+};
+
+const partOne = (input) => {
+    const options = parseInput(input);
+
+    const scores = getScores(options.players, options.lastMarble);
+
+    return Math.max(...scores);
+};
+
+const partTwo = (input) => {
+    const options = parseInput(input);
+
+    const scores = getScores(options.players, options.lastMarble * 100);
 
     return Math.max(...scores);
 };
 
 module.exports = {
-    partOne: partOne
+    partOne: partOne,
+    partTwo: partTwo
 };
