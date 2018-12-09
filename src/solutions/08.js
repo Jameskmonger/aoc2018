@@ -1,31 +1,3 @@
-const partOne = (input) => {
-    const numbers = input.split(" ").map(i => parseInt(i));
-
-    const readNode = (pointer, totalMetadata) => {
-        const childNodeCount = numbers[pointer++];
-        const metadataCount = numbers[pointer++];
-
-        for (let i = 0; i < childNodeCount; i++) {
-            const read = readNode(pointer, totalMetadata);
-            pointer = read.pointer;
-            totalMetadata = read.totalMetadata;
-        }
-
-        for (let m = 0; m < metadataCount; m++) {
-            totalMetadata += numbers[pointer++];
-        }
-
-        return {
-            pointer,
-            totalMetadata
-        };
-    };
-
-    const { totalMetadata } = readNode(0, 0);
-
-    return totalMetadata;
-};
-
 const readNodeTree = (numbers) => {
     const readNode = (pointer) => {
         const childNodeCount = numbers[pointer++];
@@ -57,6 +29,21 @@ const readNodeTree = (numbers) => {
     const { node } = readNode(0);
 
     return node;
+};
+
+const getTotalMetadata = (node) => {
+    const nodeTotal = node.metadata.reduce((acc, cur) => acc + cur, 0);
+    const childrenTotal = node.children.reduce((acc, cur) => acc + getTotalMetadata(cur), 0);
+
+    return nodeTotal + childrenTotal;
+};
+
+const partOne = (input) => {
+    const numbers = input.split(" ").map(i => parseInt(i));
+
+    const tree = readNodeTree(numbers);
+
+    return getTotalMetadata(tree);
 };
 
 const getNodeValue = (node) => {
