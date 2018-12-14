@@ -85,6 +85,30 @@ const partOne = (input) => {
     return "\n" + raster;
 };
 
+const partTwo = (input) => {
+    const positions = input.split("\n").map(parseLine);
+    const LETTER_HEIGHT = 15;
+    let steps = 0;
+
+    while (true) {
+        steps++;
+
+        applyVelocities(positions);
+
+        const bounds = getBounds(positions);
+
+        const spreadX = bounds.maxX - bounds.minX;
+        const spreadY = bounds.maxY - bounds.minY;
+
+        if (spreadX <= LETTER_HEIGHT || spreadY <= LETTER_HEIGHT) {
+            break;
+        }
+    }
+
+    return steps;
+};
+
 module.exports = {
-    partOne: partOne
+    partOne: partOne,
+    partTwo: partTwo
 };
