@@ -38,6 +38,31 @@ const partOne = (input) => {
     return highestCoordinates;
 };
 
+const partTwo = (input) => {
+    const GRID_SIZE = 300;
+
+    let highestPower = 0;
+    let highestCoordinates = null;
+    let highestSize = null;
+
+    for (let size = 1; size <= GRID_SIZE; size++) {
+        for (let x = 1; x < GRID_SIZE - size; x++) {
+            for (let y = 1; y < GRID_SIZE - size; y++) {
+                const totalPower = getSquarePower(input, x, y, size);
+
+                if (totalPower > highestPower) {
+                    highestPower = totalPower;
+                    highestCoordinates = [x, y];
+                    highestSize = size;
+                }
+            }
+        }
+    }
+
+    return [ highestCoordinates, highestSize ];
+};
+
 module.exports = {
-    partOne: partOne
+    partOne: partOne,
+    partTwo: partTwo
 };
