@@ -6,6 +6,18 @@ const getPowerLevel = (x, y, serial) => {
     return getHundredsDigit(((rackId * y) + serial) * rackId) - 5
 };
 
+const getSquarePower = (serial, x, y, size) => {
+    let totalPower = 0;
+
+    for (let _x = x; _x < x + size; _x++) {
+        for (let _y = y; _y < y + size; _y++) {
+            totalPower += getPowerLevel(_x, _y, serial)
+        }
+    }
+
+    return totalPower;
+};
+
 const partOne = (input) => {
     const GRID_SIZE = 300;
 
@@ -14,13 +26,7 @@ const partOne = (input) => {
 
     for (let x = 1; x < GRID_SIZE - 3; x++) {
         for (let y = 1; y < GRID_SIZE - 3; y++) {
-            const powers = [
-                getPowerLevel(x + 0, y + 0, input), getPowerLevel(x + 1, y + 0, input), getPowerLevel(x + 2, y + 0, input),
-                getPowerLevel(x + 0, y + 1, input), getPowerLevel(x + 1, y + 1, input), getPowerLevel(x + 2, y + 1, input),
-                getPowerLevel(x + 0, y + 2, input), getPowerLevel(x + 1, y + 2, input), getPowerLevel(x + 2, y + 2, input)
-            ];
-
-            const totalPower = powers.reduce((acc, cur) => acc + cur, 0);
+            const totalPower = getSquarePower(input, x, y, 3);
 
             if (totalPower > highestPower) {
                 highestPower = totalPower;
